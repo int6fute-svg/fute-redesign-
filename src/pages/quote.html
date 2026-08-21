@@ -47,6 +47,22 @@
               <div class="fieldset__legend"><span class="t-num">01</span><h3>The project</h3></div>
               <div class="form-grid">
                 <div class="field field--full">
+                  <label for="q-objective">Business objective &mdash; start here</label>
+                  <select id="q-objective" name="objective" required>
+                    <option value=""></option>
+                    <option>Project launch</option>
+                    <option>Premium positioning</option>
+                    <option>Buyer engagement</option>
+                    <option>Sales conversion</option>
+                    <option>Experience-centre transformation</option>
+                    <option>Investor communication</option>
+                    <option>International marketing</option>
+                    <option>Not sure yet — advise us</option>
+                  </select>
+                  <span class="field__caret" aria-hidden="true"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.4"/></svg></span>
+                  <span class="field__err" aria-live="polite"></span>
+                </div>
+                <div class="field field--full">
                   <label for="q-project">Project name</label>
                   <input id="q-project" name="project" type="text" required>
                   <span class="field__err" aria-live="polite"></span>
@@ -85,20 +101,39 @@
             <fieldset class="fieldset">
               <legend class="u-sr">Scope</legend>
               <div class="fieldset__legend"><span class="t-num">02</span><h3>What you need</h3></div>
-              <p class="t-body" style="font-size:.875rem;margin-bottom:1.25rem">Select everything that applies &mdash; we will tell you what can be reused across them.</p>
+              <p class="t-body" style="font-size:.875rem;margin-bottom:1.25rem">Not sure? Answer the objective above and leave this blank &mdash; we will recommend the combination.</p>
+
+              <p class="t-label t-label--red" style="margin-bottom:.75rem">01 · Visual &nbsp; 02 · Cinematic</p>
               <div class="chip-set">
-                <label class="chip"><input type="checkbox" name="scope" value="Exterior renders"> Exterior renders</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Exterior CGI"> Exterior CGI</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Interior CGI"> Interior CGI</label>
                 <label class="chip"><input type="checkbox" name="scope" value="Aerial views"> Aerial views</label>
-                <label class="chip"><input type="checkbox" name="scope" value="Interior renders"> Interior renders</label>
-                <label class="chip"><input type="checkbox" name="scope" value="Walkthrough film"> Walkthrough film</label>
-                <label class="chip"><input type="checkbox" name="scope" value="VR / AR"> VR / AR</label>
-                <label class="chip"><input type="checkbox" name="scope" value="360 panorama"> 360&deg; panorama</label>
-                <label class="chip"><input type="checkbox" name="scope" value="3D floor plans"> 3D floor plans</label>
-                <label class="chip"><input type="checkbox" name="scope" value="2D floor plans"> 2D floor plans</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Floor-plan visualisation"> Floor-plan visualisation</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Walkthrough"> Walkthrough</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Launch film"> Launch film</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Teaser or lifestyle film"> Teaser / lifestyle film</label>
+              </div>
+
+              <p class="t-label t-label--red" style="margin:1.5rem 0 .75rem">03 · Interactive &nbsp; 04 · Sales</p>
+              <div class="chip-set">
+                <label class="chip"><input type="checkbox" name="scope" value="Interactive masterplan"> Interactive masterplan</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Unit or floor selector"> Unit / floor selector</label>
+                <label class="chip"><input type="checkbox" name="scope" value="360 virtual tour"> 360&deg; virtual tour</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Real-time 3D"> Real-time 3D</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Sales presentation platform"> Sales presentation platform</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Sales-gallery interface"> Sales-gallery interface</label>
                 <label class="chip"><input type="checkbox" name="scope" value="Physical scale model"> Physical scale model</label>
-                <label class="chip"><input type="checkbox" name="scope" value="Drone shoot"> Drone shoot</label>
-                <label class="chip"><input type="checkbox" name="scope" value="Chroma shoot"> Chroma shoot</label>
-                <label class="chip"><input type="checkbox" name="scope" value="Brochure and collateral"> Brochure &amp; collateral</label>
+              </div>
+
+              <p class="t-label t-label--red" style="margin:1.5rem 0 .75rem">05 · Immersive &nbsp; 06 · AI &amp; Technology</p>
+              <div class="chip-set">
+                <label class="chip"><input type="checkbox" name="scope" value="Virtual reality"> Virtual reality</label>
+                <label class="chip"><input type="checkbox" name="scope" value="AR experience"> AR experience</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Immersive room"> Immersive room</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Digital twin"> Digital twin</label>
+                <label class="chip"><input type="checkbox" name="scope" value="AI property advisor"> AI property advisor</label>
+                <label class="chip"><input type="checkbox" name="scope" value="AI sales assistant"> AI sales assistant</label>
+                <label class="chip"><input type="checkbox" name="scope" value="Drone or chroma shoot"> Drone / chroma shoot</label>
               </div>
 
               <div class="form-grid u-mt-m">

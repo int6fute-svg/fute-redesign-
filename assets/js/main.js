@@ -172,36 +172,27 @@
     });
   }
 
-  /* ------------------------------------------------- capability hover image */
-  function capsPreview() {
-    var wrap = $('[data-caps]');
-    var preview = $('[data-caps-preview]');
-    if (!wrap || !preview || window.matchMedia('(pointer:coarse)').matches) return;
+  /* ------------------------------------------ product-family media switcher */
+  function families() {
+    var wrap = $('[data-families]');
+    if (!wrap) return;
+    var rows = $$('.fam__row', wrap);
+    var imgs = $$('[data-fam-media] img', wrap);
+    var caption = $('[data-fam-caption]', wrap);
+    if (!rows.length || !imgs.length) return;
 
-    var imgs = $$('img', preview);
-    var x = 0, y = 0, tx = 0, ty = 0, raf = null, on = false;
-
-    function loop() {
-      tx += (x - tx) * 0.14;
-      ty += (y - ty) * 0.14;
-      preview.style.left = tx + 'px';
-      preview.style.top = ty + 'px';
-      raf = requestAnimationFrame(loop);
+    function show(i) {
+      rows.forEach(function (r, j) { r.classList.toggle('is-active', i === j); });
+      imgs.forEach(function (im, j) { im.classList.toggle('is-active', i === j); });
+      if (caption) caption.textContent = rows[i].getAttribute('data-fam-caption-text') || '';
     }
 
-    wrap.addEventListener('pointermove', function (e) { x = e.clientX; y = e.clientY; });
+    rows.forEach(function (row, i) {
+      row.addEventListener('pointerenter', function () { show(i); });
+      row.addEventListener('focusin', function () { show(i); });
+    });
 
-    $$('.caps__row', wrap).forEach(function (row, i) {
-      row.addEventListener('pointerenter', function () {
-        imgs.forEach(function (im, j) { im.classList.toggle('is-active', i === j); });
-        preview.classList.add('is-on');
-        if (!on) { on = true; tx = x; ty = y; loop(); }
-      });
-    });
-    wrap.addEventListener('pointerleave', function () {
-      preview.classList.remove('is-on');
-      if (raf) { cancelAnimationFrame(raf); raf = null; on = false; }
-    });
+    show(0);
   }
 
   /* ------------------------------------------------------------- hero reel */
@@ -385,7 +376,7 @@
     document.addEventListener('pointermove', function (e) {
       x = e.clientX; y = e.clientY;
       dot.classList.add('is-on');
-      var hit = e.target.closest('a, button, .work-card, .caps__row, [data-cursor="lg"]');
+      var hit = e.target.closest('a, button, .work-card, .fam__row, .objectives__row, .crosssell__item, [data-cursor="lg"]');
       dot.classList.toggle('is-lg', !!hit);
     });
     document.addEventListener('pointerleave', function () { dot.classList.remove('is-on'); });
@@ -418,7 +409,7 @@
 
   function init() {
     header(); progress(); menu(); reveal(); marquee();
-    capsPreview(); heroSlides(); filters(); accordion();
+    families(); heroSlides(); filters(); accordion();
     chips(); forms(); cursor(); misc();
   }
 
