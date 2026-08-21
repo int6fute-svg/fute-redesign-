@@ -44,13 +44,6 @@
 }
 .hero__main{ grid-column:1 / span 7; }
 
-.hero__eyebrow{
-  display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
-  color:rgba(255,255,255,.66);
-  margin-bottom:clamp(1.25rem,2.6vw,2.25rem);
-}
-.hero__eyebrow::before{ content:""; width:clamp(28px,3.5vw,56px); height:1px; background:var(--red); flex:none; }
-
 .hero__title{
   font-size:var(--fs-display);
   font-weight:600; line-height:.88; letter-spacing:-.042em;
