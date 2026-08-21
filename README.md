@@ -1,10 +1,10 @@
-# Futé Services — website redesign
+# Futé Services — website
 
-A complete redesign of futeservices.com as a **static site**: plain HTML, CSS and
-vanilla JavaScript. No framework, no runtime, no dependencies. Upload the folder
-to any host (Netlify, Vercel, cPanel, S3, Hostinger) and it works.
+**Next.js 15 (App Router) + React 19 + TypeScript**, built as a **static export**.
+`npm run build` writes a plain `out/` folder that runs on any host — Netlify,
+Vercel, cPanel, S3, Hostinger — with no Node runtime required.
 
-The content architecture follows the **Internal Portfolio Service Brief** — six
+The content architecture follows the **Internal Portfolio Service Brief**: six
 product families, outcome-led selling, and the positioning ladder from
 *visualisation vendor* to *real-estate experience & technology company*.
 
@@ -14,126 +14,132 @@ Palette is **black, white and red only** — taken from the Futé logo.
 
 ---
 
-## Run it locally
+## Commands
 
 ```bash
-node server.js       # → http://localhost:5173
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # static export → out/
+npm run serve    # serve out/ exactly as a dumb host would → http://localhost:4173
+npm run lint
 ```
 
-Any static server works. Opening `index.html` from the filesystem also works.
+Always check `npm run serve` before uploading: it catches anything that only
+worked because the dev server was clever.
 
 ---
 
-## Pages
+## Routes
 
-**Core**
+| Route | File | What it is |
+|---|---|---|
+| `/` | `app/page.tsx` | Hero, positioning ladder, six families, work, objective-led entry, process, sectors, clients, offices |
+| `/studio` | `app/studio/page.tsx` | Vision & mission, values, timeline, leadership, FAQ, careers |
+| `/services` | `app/services/page.tsx` | The product architecture: six families, how they combine, engagement |
+| `/services/[slug]` | `app/services/[slug]/page.tsx` | One page per family — six static routes |
+| `/solutions` | `app/solutions/page.tsx` | Four packaged solutions built around a business objective |
+| `/work` | `app/work/page.tsx` | Filterable project index |
+| `/work/[slug]` | `app/work/[slug]/page.tsx` | Case-study template — one route per project |
+| `/journal` | `app/journal/page.tsx` | News / insights index |
+| `/contact` | `app/contact/page.tsx` | Enquiry form, direct lines, all six studios |
+| `/quote` | `app/quote/page.tsx` | Structured quote request — starts with the business objective |
+| 404 | `app/not-found.tsx` | Not found |
 
-| File | What it is |
-|---|---|
-| `index.html` | Home — hero, positioning ladder, six families, work, objective-led entry, process, sectors, clients, offices |
-| `studio.html` | About the studio — vision & mission, values, timeline, leadership, FAQ, careers |
-| `services.html` | The product architecture: all six families, how they combine, engagement models |
-| `solutions.html` | Four packaged solutions built around a business objective |
-| `work.html` | Filterable project index (25 cards, 8 filters) |
-| `project.html` | Case-study template — duplicate per project |
-| `journal.html` | News / insights index |
-| `contact.html` | Enquiry form, direct lines, all six studios |
-| `quote.html` | Structured quote request — starts with the business objective |
-| `404.html` | Not found |
-
-**Product families** — generated, do not edit directly (see below)
-
-| File | Family |
-|---|---|
-| `service-visual-experience.html` | 01 Visual Experience |
-| `service-cinematic-experience.html` | 02 Cinematic Experience |
-| `service-interactive-experience.html` | 03 Interactive Experience |
-| `service-sales-experience.html` | 04 Sales Experience |
-| `service-immersive-experience.html` | 05 Immersive Experience |
-| `service-ai-technology.html` | 06 AI & Technology |
-
-Every family page carries the same ten sections the brief specifies: name,
-one-line positioning, client challenge, Futé solution, deliverables, business
-benefit, best work, case study (challenge → solution → result), related products,
-call to action.
+Both dynamic segments use `generateStaticParams`, so every page is prerendered
+at build time — 41 HTML files in total.
 
 ---
 
-## Editing
+## Where the content lives
 
-Root `.html` files are **generated**. Edit the source and rebuild:
+Copy is data, not markup. Edit these and the pages follow:
 
 ```
-src/partials/head.html      <head> + opening <body>
-src/partials/header.html    header + full-screen menu
-src/partials/footer.html    closing CTA + footer + script tag
-src/partials/product.html   the shared product-family template
-src/data/products.js        all six families' content — edit copy here
-src/pages/*.html            the <main> of each authored page + front matter
+lib/products.ts   the six product families — the whole services section
+lib/work.ts       the project index and its filters
+lib/site.ts       clients, sectors, offices, objectives, process steps
 ```
 
-```bash
-node build.js     # regenerates every root .html
-```
+`lib/products.ts` is the important one. Every family page renders the same ten
+sections the brief mandates — name, one-line positioning, client challenge, Futé
+solution, deliverables, business benefit, best work, case study
+(challenge → solution → result), related products, call to action — from one
+template, so the format cannot drift between them. Adding a seventh family means
+adding one entry to that array; the route, the nav links, the footer and every
+cross-sell reference follow automatically.
 
-Front matter sits at the top of each `src/pages/*.html`:
+---
 
-```html
-<!-- meta {
-  "page": "work",              // which nav item gets aria-current
-  "title": "…",
-  "description": "…",
-  "ogImage": "assets/img/…",
-  "cta": false                 // optional: drop the shared closing CTA
-} -->
-```
+## Component map
 
-**To change a product family's copy**, edit `src/data/products.js` and rebuild —
-never the generated `service-*.html`. To add a seventh family, add an entry to
-that array; the page, its nav links and its cross-sell references follow.
+**Server components** (the default — no JS shipped):
+`Footer`, `WorkCard`, `ui.tsx` (Btn, TextLink, SectionHead, Crumbs, PageHero),
+`sections.tsx` (Marquee, Stats, Evolution, Objectives, Process, Card, Cta),
+`icons.tsx`.
 
-If you would rather not keep a build step, delete `src/` and `build.js` and edit
-the root `.html` files directly — they are complete, standalone documents.
+**Client components** (only where there is real interaction):
+
+| Component | Why it is a client component |
+|---|---|
+| `Header` | scroll state, hide-on-scroll, full-screen menu |
+| `HeroStage` | crossfading slides and the dot control |
+| `FamilyIndex` | hover/focus swaps the pinned media panel |
+| `WorkIndex` | filter state |
+| `Accordion` | open/close with animated height |
+| `ContactForm` / `QuoteForm` | validation and state |
+| `ScrollReveal` | one IntersectionObserver for the whole page |
+| `Cursor` | the pointer dot |
+| `Year` | the footer year, so a static build does not freeze it |
+
+`ScrollReveal` is deliberately class-driven rather than per-component state: the
+animation is presentation, the classes already live in the CSS, and it keeps
+every page a server component. It re-scans on route change.
 
 ---
 
 ## Design system
 
-Everything is driven by custom properties in `assets/css/main.css`.
+Tokens live in `app/globals.css`; section and page styles in `app/sections.css`.
 
 ```css
---ink:  #0B0B0C   /* page black      */
---paper:#FFFFFF   /* page white      */
---red:  #C8102E   /* brand red       */
---red-bright:#E4172F
---red-deep:  #7A0F1C
+--ink:  #0B0B0C   /* page black */
+--paper:#FFFFFF   /* page white */
+--red:  #C8102E   /* brand red  */
 ```
 
-**Section themes.** Put `data-theme` on any `.section` to flip it:
-`light` (white), `bone` (warm off-white), `red` (full red band). No attribute =
-black. Every component reads `--bg` / `--fg` / `--line`, so it inherits correctly.
+**Section themes.** Put `data-theme` on any `.section` to flip it: `light`
+(white), `bone` (warm off-white), `red` (full red band). No attribute = black.
+Every component reads `--bg` / `--fg` / `--line`, so it inherits correctly.
 
-**Type.** Archivo (grotesk) for everything structural, Instrument Serif italic for
-emphasis words, IBM Plex Mono for labels, indices and buttons. Sizes are all
-`clamp()` — no separate mobile type scale to maintain.
+**Type.** Archivo (grotesk) for structure, Instrument Serif italic for emphasis
+words, IBM Plex Mono for labels and buttons — all three self-hosted through
+`next/font`, so there is no runtime request to Google. Sizes are all `clamp()`.
 
 **Grid.** 12 columns, `--maxw: 1680px`, `--gutter` fluid from 20px to 72px.
 
-**Motion.** Add `reveal` (fade up), `reveal-line` (masked line, wrap the text in a
-child `<span>`), `reveal-mask` (clip wipe) or `reveal-img` (slow scale-down) to any
-element. Add `data-stagger="120"` to a parent to cascade its children. All of it
-is disabled under `prefers-reduced-motion`.
+**Motion.** Add `reveal`, `reveal-line` (wrap the text in a child `<span>`),
+`reveal-mask` or `reveal-img` to any element; `data-stagger="120"` on a parent
+cascades its children. All of it is disabled under `prefers-reduced-motion`.
 
 **Logo.** `tools/logo-knockout.js` derives `fute-logo-light.png` from the supplied
 logo by rewriting only the neutral dark pixels to white — the red mark and
-"services" are untouched. That light version sits directly on the dark ground, so
-the header needs no white plate. Re-run `node tools/logo-knockout.js` if the
-source logo changes.
+"services" are untouched. Re-run `node tools/logo-knockout.js` if the source
+logo changes.
 
-**JS modules** (`assets/js/main.js`) are all optional — each no-ops when its markup
-is absent, so one file serves every page: sticky/hide header, menu, reveals,
-counters, marquee, product-family media switcher, hero slideshow, work filters,
-accordion, chips, form validation, cursor dot.
+**Images** use plain `<img>` rather than `next/image`: static export cannot run
+the optimiser, so `next/image` would add a wrapper without adding value. Sizes
+are governed by CSS aspect-ratio boxes, so there is no layout shift.
+
+---
+
+## Deploying
+
+- **Vercel / Netlify** — connect the repo; the defaults work. To use Vercel's
+  image optimisation and ISR instead, delete `output: 'export'` from
+  `next.config.ts`.
+- **Any static host** — `npm run build`, then upload the contents of `out/`.
+- **Hosting under a sub-path** (e.g. `example.com/site/`) needs `basePath` and
+  `assetPrefix` in `next.config.ts`; asset URLs are absolute today.
 
 ---
 
@@ -141,56 +147,53 @@ accordion, chips, form validation, cursor dot.
 
 The structure and copy are production-ready; these specific items are placeholders.
 
-1. **Case studies.** Every family page carries a placeholder narrative, flagged as
-   such in its section aside. The brief asks for 2–3 real case studies per family.
-   Replace the `caseStudy` block in `src/data/products.js`.
-2. **Project names, cities and years** in `work.html`, `index.html` and
-   `project.html` (Axis Business District, Meridian Heights, …) are invented.
-3. **Imagery** in `assets/img/work/` was pulled from the current futeservices.com
-   so the layout could be judged against real work. Replace with final, licensed
-   masters. Several files (e.g. `res-06.webp`, `int-02.webp`, `com-07.webp`) still
-   carry the old on-image Futé watermark.
-4. **AI & Technology has no imagery of its own** — that page currently borrows
-   architectural renders. It needs interface, dashboard or product screenshots.
+1. **Case studies.** Every family page carries a placeholder narrative, flagged in
+   its section aside. The brief asks for 2–3 real case studies per family. Edit
+   the `caseStudy` block in `lib/products.ts`.
+2. **Project names, cities and years** in `lib/work.ts` (Axis Business District,
+   Meridian Heights, …) are invented. So is the brief copy on `/work/[slug]`.
+3. **Imagery** in `public/assets/img/work/` was pulled from the current
+   futeservices.com so the layout could be judged against real work. Replace with
+   final, licensed masters. Several files (`res-06.webp`, `int-02.webp`,
+   `com-07.webp`) still carry the old on-image Futé watermark.
+4. **AI & Technology has no imagery of its own** — that page borrows architectural
+   renders. It needs interface, dashboard or product screenshots.
 5. **Interactive / Sales / Immersive** would be far stronger with screen captures
    of a real masterplan, unit selector, sales platform and headset experience.
-6. **Statistics** on the home page: "12+ years" comes from the current site;
-   "6 studios" and "6 product families" are factual. **"1,200+ deliverables
-   shipped" is a placeholder** — confirm or change it.
+6. **Statistics**: "12+ years" comes from the current site; "6 studios" and
+   "6 product families" are factual. **"1,200+ deliverables shipped" is a
+   placeholder** — confirm or change it.
 7. **Founding year 2013** is inferred from the current site's "12 years in the
-   market". Confirm it; it appears in the hero, the footer and the studio timeline.
-8. **Studio timeline** (`studio.html`) — the milestones are plausible but invented.
-9. **Client list** is text-only (Runwal, Godrej, Embassy, L&T Realty, Lulu). Drop in
-   logo SVGs and confirm you have permission to name each one.
+   market". Confirm it; it appears in the footer and the studio timeline.
+8. **Studio timeline** (`app/studio/page.tsx`) — plausible but invented.
+9. **Client list** is text-only. Drop in logo SVGs and confirm permission to name
+   each one.
 10. **Office addresses** are city-level only. Add registered street addresses in
-    `contact.html`, and swap `.mapish` for a real embedded map.
-11. **Leadership portraits** — `studio.html` shows initials in correctly-sized
-    frames. Replace `.team__ph` with an `<img>` when the shoot is done.
+    `app/contact/page.tsx`, and swap `.mapish` for a real embedded map.
+11. **Leadership portraits** — initials in correctly-sized frames. Replace
+    `.team__ph` with an `<img>` when the shoot is done.
 12. **Journal articles** are placeholder posts, all linking back to the index.
-13. **Showreel** currently links to `work.html`. Point `.reel` at the real video.
-14. **Forms do not submit anywhere.** `main.js` validates and shows a confirmation
-    message; wire the `submit` handler to your endpoint. Search for `data-form`.
+    Move them to MDX or a CMS once there is a publishing rhythm.
+13. **Showreel** links to `/work/`. Point `.reel` at the real video.
+14. **Forms do not submit anywhere.** `components/form.tsx` validates and shows a
+    confirmation; wire `useFormState`'s success branch to your endpoint. If you
+    drop `output: 'export'`, a server action is the cleanest option.
 
 ### Also worth knowing
 
-The current live site's footer is injected with **spam links** to dozens of
-unrelated domains — a strong sign the existing deployment has been compromised.
-This rebuild is clean, but the hosting account and any old CMS should be audited
-before or during the cutover.
+The current live futeservices.com footer is injected with **spam links** to dozens
+of unrelated domains — a strong sign that deployment has been compromised. This
+rebuild is clean, but the hosting account and any old CMS should be audited before
+or during the cutover.
 
 ---
 
-## Accessibility & performance notes
+## Accessibility notes
 
 - Skip link, visible focus rings, `aria-current` on the active nav item, labelled
   form fields with live error messaging, `aria-expanded` on the menu and accordion.
 - The closed menu is `visibility:hidden`, so it stays out of the tab order.
-- The product-family switcher responds to `focusin` as well as hover, so it is
-  usable from the keyboard.
+- The family switcher responds to `focus` as well as hover, so it is keyboard-usable.
 - All motion respects `prefers-reduced-motion`.
-- Images use `loading="lazy"` (except the hero, which is `fetchpriority="high"`).
-- Fonts load from Google Fonts with `display=swap` and preconnect. For a fully
-  self-hosted build, download the three families into `assets/fonts/` and swap the
-  `<link>` in `src/partials/head.html` for `@font-face` rules.
 - Before launch, run the source images through a compressor — several are over
   700 KB, which is the single biggest performance item on the site.
