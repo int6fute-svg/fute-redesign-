@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from './icons';
 
 const NAV = [
   { href: '/', label: 'Home' },
@@ -81,7 +80,6 @@ export default function Header() {
           <div className="header__cta">
             <Link className="btn" href="/quote/">
               Get a quote
-              <ArrowUpRight className="btn__arrow" />
             </Link>
             <button
               className={`burger${open ? ' is-open' : ''}`}

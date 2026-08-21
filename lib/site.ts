@@ -1,15 +1,5 @@
 /* Shared site content used on more than one page. */
 
-export const CLIENTS = [
-  'Runwal Group',
-  'Godrej Properties',
-  'Embassy Group',
-  'L&T Realty',
-  'Lulu Group',
-];
-
-export const MARQUEE = [...CLIENTS, 'Trusted by developers across 5 countries'];
-
 export const SECTORS = [
   'Residential Towers',
   'Township & Masterplan',

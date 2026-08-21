@@ -1,25 +1,9 @@
 /** Shared inline SVGs. Kept tiny and stroke-based so they inherit currentColor. */
 
-export function ArrowUpRight({ className = 'arrow', size = 12 }: { className?: string; size?: number }) {
-  return (
-    <svg className={className} width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path d="M1 13 13 1M13 1H4M13 1v9" stroke="currentColor" strokeWidth="1.4" />
-    </svg>
-  );
-}
-
 export function ArrowRight({ className, size = 18 }: { className?: string; size?: number }) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true">
       <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.3" />
-    </svg>
-  );
-}
-
-export function ArrowDown({ className, size = 16 }: { className?: string; size?: number }) {
-  return (
-    <svg className={className} width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path d="M7 1v12M2 8l5 5 5-5" stroke="currentColor" strokeWidth="1.3" />
     </svg>
   );
 }

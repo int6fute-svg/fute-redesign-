@@ -1,15 +1,26 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import type { Client } from '@/lib/clients';
+import ClientMark from './ClientMark';
 import { ArrowRight } from './icons';
 import { Btn } from './ui';
 
 /* ------------------------------------------------------------------ marquee */
-export function Marquee({ items, seconds = 46 }: { items: string[]; seconds?: number }) {
+export function Marquee({
+  clients,
+  tail,
+  seconds = 46,
+}: {
+  clients: Client[];
+  tail?: string;
+  seconds?: number;
+}) {
   const row = (
     <div className="marquee__item">
-      {items.map((t) => (
-        <span key={t}>{t}</span>
+      {clients.map((c) => (
+        <ClientMark client={c} key={c.file} />
       ))}
+      {tail ? <span>{tail}</span> : null}
     </div>
   );
   return (

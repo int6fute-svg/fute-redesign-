@@ -427,14 +427,24 @@
 /* --- CLIENTS -------------------------------------------------------------- */
 .clients{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); border-top:var(--rule) solid var(--line); border-left:var(--rule) solid var(--line); }
 .client{
+  position:relative; overflow:hidden;
   border-right:var(--rule) solid var(--line); border-bottom:var(--rule) solid var(--line);
-  aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+  aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem;
   padding:1rem; text-align:center;
   font-size:clamp(.8rem,1.05vw,1.05rem); font-weight:600; letter-spacing:-.01em;
   color:var(--fg-mute);
   transition:background .4s var(--ease), color .4s var(--ease);
 }
 .client:hover{ background:var(--red); color:#fff; }
+.client:hover .client__word{ color:#fff; }
+/* The project we actually delivered for them, revealed on hover. */
+.client__project{
+  font-family:var(--mono); font-size:.625rem; letter-spacing:.14em; text-transform:uppercase;
+  opacity:0; transform:translateY(6px);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.client:hover .client__project{ opacity:.85; transform:none; }
+@media (hover:none){ .client__project{ opacity:.55; transform:none; } }
 
 /* --- OFFICES -------------------------------------------------------------- */
 .offices{ border-top:var(--rule) solid var(--line); }

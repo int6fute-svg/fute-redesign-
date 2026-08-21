@@ -3,10 +3,12 @@ import FamilyIndex from '@/components/FamilyIndex';
 import HeroStage from '@/components/HeroStage';
 import WorkCard from '@/components/WorkCard';
 import { PlayGlyph } from '@/components/icons';
+import ClientMark from '@/components/ClientMark';
 import { Cta, Evolution, Marquee, Objectives, Process, Stats } from '@/components/sections';
 import { Btn, SectionHead, TextLink } from '@/components/ui';
 import { products } from '@/lib/products';
-import { CLIENTS, MARQUEE, OBJECTIVES, OFFICES, PROCESS, SECTORS } from '@/lib/site';
+import { clients } from '@/lib/clients';
+import { OBJECTIVES, OFFICES, PROCESS, SECTORS } from '@/lib/site';
 import { featured } from '@/lib/work';
 
 const SLIDES = [
@@ -57,7 +59,7 @@ export default function Home() {
         </div>
       </HeroStage>
 
-      <Marquee items={MARQUEE} />
+      <Marquee clients={clients} tail="Trusted by developers across 5 countries" />
 
       {/* ------------------------------------------------------- 01 statement */}
       <section className="section" id="statement">
@@ -259,15 +261,19 @@ export default function Home() {
               </h2>
             }
           />
-          {/* Replace text cells with client logo SVGs when supplied. */}
+          {/* Logos render automatically once files land in
+              public/assets/img/clients/ — see lib/clients.ts. */}
           <div className="clients">
-            {CLIENTS.map((c) => (
-              <div className="client" key={c}>
-                {c}
+            {clients.map((c) => (
+              <div className="client" key={c.file}>
+                <ClientMark client={c} />
+                <span className="client__project">
+                  {c.project} · {c.city}
+                </span>
               </div>
             ))}
             <div className="client" style={{ color: 'var(--red)' }}>
-              + many more
+              <span className="client__word">+ many more</span>
             </div>
           </div>
         </div>

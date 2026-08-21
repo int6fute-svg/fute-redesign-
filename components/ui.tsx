@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { ArrowUpRight } from './icons';
 
 /** Primary/ghost/dark button. `href` renders a Link, otherwise a <button>. */
 export function Btn({
@@ -17,22 +16,16 @@ export function Btn({
   className?: string;
 }) {
   const cls = `btn${variant ? ` btn--${variant}` : ''}${className ? ` ${className}` : ''}`;
-  const inner = (
-    <>
-      {children}
-      <ArrowUpRight className="btn__arrow" />
-    </>
-  );
   if (href) {
     return (
       <Link className={cls} href={href}>
-        {inner}
+        {children}
       </Link>
     );
   }
   return (
     <button className={cls} type={type ?? 'button'}>
-      {inner}
+      {children}
     </button>
   );
 }
@@ -50,7 +43,6 @@ export function TextLink({
   return (
     <Link className="link" href={href} style={style}>
       {children}
-      <ArrowUpRight />
     </Link>
   );
 }
