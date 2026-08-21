@@ -131,9 +131,9 @@ the header needs no white plate. Re-run `node tools/logo-knockout.js` if the
 source logo changes.
 
 **JS modules** (`assets/js/main.js`) are all optional — each no-ops when its markup
-is absent, so one file serves every page: sticky/hide header, scroll progress,
-menu, reveals, counters, marquee, product-family media switcher, hero slideshow,
-work filters, accordion, chips, form validation, cursor dot.
+is absent, so one file serves every page: sticky/hide header, menu, reveals,
+counters, marquee, product-family media switcher, hero slideshow, work filters,
+accordion, chips, form validation, cursor dot.
 
 ---
 

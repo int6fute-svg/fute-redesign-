@@ -591,13 +591,6 @@ hr{ border:0; border-top:var(--rule) solid var(--line); margin:0; }
 }
 .tag--red{ background:var(--red); border-color:var(--red); color:#fff; }
 
-/* Scroll progress */
-.progress{
-  position:fixed; top:0; left:0; height:2px; width:100%; z-index:130;
-  transform-origin:left; transform:scaleX(0); background:var(--red);
-  pointer-events:none;
-}
-
 /* Cursor */
 .cursor{
   position:fixed; top:0; left:0; z-index:200; pointer-events:none;

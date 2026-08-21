@@ -31,21 +31,6 @@
     window.addEventListener('scroll', update, { passive: true });
   }
 
-  /* -------------------------------------------------------------- progress */
-  function progress() {
-    var bar = $('[data-progress]');
-    if (!bar) return;
-    function update() {
-      var doc = document.documentElement;
-      var max = doc.scrollHeight - window.innerHeight;
-      var p = max > 0 ? (window.scrollY / max) : 0;
-      bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
-    }
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-  }
-
   /* ------------------------------------------------------------------ menu */
   function menu() {
     var btn = $('[data-burger]');
@@ -408,7 +393,7 @@
   }
 
   function init() {
-    header(); progress(); menu(); reveal(); marquee();
+    header(); menu(); reveal(); marquee();
     families(); heroSlides(); filters(); accordion();
     chips(); forms(); cursor(); misc();
   }
